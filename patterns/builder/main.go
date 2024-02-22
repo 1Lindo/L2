@@ -1,17 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"main/pkg/builderPkg"
+)
 
 func main() {
-	postgresBuilder := getBuilder("postgres")
-	redisBuilder := getBuilder("redis")
+	postgresBuilder := builderPkg.GetBuilder("postgres")
+	redisBuilder := builderPkg.GetBuilder("redis")
 
-	director := newDirector(postgresBuilder)
+	director := builderPkg.NewDirector(postgresBuilder)
 	postgresDb := director.BuildDb()
 
-	fmt.Printf("PostgresDB config[%+v], conn[%+v], ping[%+v] \n", postgresDb.config, postgresDb.connection, postgresDb.ping)
+	fmt.Printf("PostgresDB config[%+v], conn[%+v], ping[%+v] \n", postgresDb.Config, postgresDb.Connection, postgresDb.Ping)
 
-	director.setDirector(redisBuilder)
+	director.SetDirector(redisBuilder)
 	redisDB := director.BuildDb()
-	fmt.Printf("RedisDB config[%+v], conn[%+v], ping[%+v] \n", redisDB.config, redisDB.connection, redisDB.ping)
+	fmt.Printf("RedisDB config[%+v], conn[%+v], ping[%+v] \n", redisDB.Config, redisDB.Connection, redisDB.Ping)
 }
